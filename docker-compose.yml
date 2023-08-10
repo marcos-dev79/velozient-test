@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  apipm:
+    container_name: 'api_pm'
+    build: './'
+    ports:
+      - '8040:8040'
+    volumes:
+      - './:/go/src/app'
