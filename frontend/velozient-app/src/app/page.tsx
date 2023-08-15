@@ -2,6 +2,7 @@
 import styles from './page.module.css'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { get } from 'http';
 import { useEffect, useState } from "react";
@@ -47,15 +48,17 @@ export default function Home() {
                   {card.username}<br/>
                   {card.password}<br/>
                 </p>
+
+                <FontAwesomeIcon icon={faPlus} className={styles.iconsm} />
               </div>
             );
           }) : (
-            <div className={styles.card}>
-              <h3 className={styles.nameOf}>No passwords added.</h3>
-              <p className={styles.paragraph}>
-                Add one by clicking the button below.
-                <FontAwesomeIcon icon={faEdit} className={styles.iconsm} />
-              </p>
+              <div>
+                <h3 className={styles.nameOf}>No passwords added.</h3>
+                <p className={styles.paragraph}>
+                  Add one by clicking the button:
+                  <FontAwesomeIcon icon={faPlus} className={styles.iconsm} />
+                </p>
               </div>
           )}
 
