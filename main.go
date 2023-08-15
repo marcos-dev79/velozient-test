@@ -13,7 +13,7 @@ func main() {
 	router.Use(cors.New(cors.Config{
         AllowOrigins:     []string{"*"}, // only for testing - definitely would add some security here
         AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE"},
-        AllowHeaders:     []string{"Origin"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Content-Length"},
         ExposeHeaders:    []string{"Content-Length"},
         AllowCredentials: true,
     }))

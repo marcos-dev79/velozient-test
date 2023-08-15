@@ -41,6 +41,14 @@
   position: absolute;
   align-self: end;
   width: 1.1rem;
+  cursor: pointer;
+}
+
+.iconbg {
+  position: inherit;
+  align-self: end;
+  width: 1.5rem;
+  cursor: pointer;
 }
 
 .iconsm2 {
@@ -48,4 +56,20 @@
   align-self: end;
   width: 1.2rem;
   margin-right: 1.7rem;
+  cursor: pointer;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem;
+  margin-bottom: 0.7rem;
+  border-radius: 0.3rem;
+  background-color: #fff;
+}
+
+.mgleft {
+  margin-left: 0.5rem;
 }

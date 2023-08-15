@@ -23,6 +23,8 @@ func NewCard(c *gin.Context) {
 		return
 	}
 
+	card.ID = len(cards) + 1
+
 	cards = append(cards, card)
 
 	c.JSON(200, gin.H{
