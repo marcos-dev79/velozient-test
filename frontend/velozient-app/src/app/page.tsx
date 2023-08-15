@@ -2,20 +2,32 @@
 import styles from './page.module.css'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { get } from 'http';
+import { useEffect, useState } from "react";
+
+interface Carddata {
+  id: number;
+  name: string;
+  url: string;
+  username: string;
+  password: string;
+}
 
 export default function Home() {
 
-  const callAPI = async () => {
-    try {
-      const res = await fetch(`http://localhost:8040/password-cards`);
-      const data = await res.json();
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [cardsinfo, setcardsinfo] = useState<Carddata[]>([]);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('http://localhost:8040/password-cards')
+      .then((res) => res.json())
+      .then((cardsinfo) => {
+        setcardsinfo(cardsinfo.data);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <main className={styles.main}>
@@ -23,39 +35,30 @@ export default function Home() {
       <h1 className={styles.title}>Password Manager</h1>
 
       <div className={styles.grid}>
-        <div className={styles.card}>
-        <button onClick={callAPI}>Make API call</button>
-          <FontAwesomeIcon icon={faEdit} className={styles.iconsm2} />
-          <FontAwesomeIcon icon={faTrash} className={styles.iconsm}/>
-          <h3 className={styles.nameOf}>Name</h3>
-          <p className={styles.paragraph}>
-            <a href="#">URL</a><br/>
-            Username<br/>
-            Password<br/>
-          </p>
-        </div>
 
-        <div className={styles.card}>
-          <FontAwesomeIcon icon={faEdit} className={styles.iconsm2}/>
-          <FontAwesomeIcon icon={faTrash} className={styles.iconsm}/>
-          <h3 className={styles.nameOf}>Name</h3>
-          <p className={styles.paragraph}>
-            <a href="#">URL</a><br/>
-            Username<br/>
-            Password<br/>
-          </p>
-        </div>
+        {cardsinfo ? cardsinfo.map((card) => {
+            return (
+              <div key={card.id} className={styles.card}>
+                <FontAwesomeIcon icon={faEdit} className={styles.iconsm2} />
+                <FontAwesomeIcon icon={faTrash} className={styles.iconsm}/>
+                <h3 className={styles.nameOf}>{card.name}</h3>
+                <p className={styles.paragraph}>
+                  <a href={card.url} target='_blank'>{card.url}</a><br/>
+                  {card.username}<br/>
+                  {card.password}<br/>
+                </p>
+              </div>
+            );
+          }) : (
+            <div className={styles.card}>
+              <h3 className={styles.nameOf}>No passwords added.</h3>
+              <p className={styles.paragraph}>
+                Add one by clicking the button below.
+                <FontAwesomeIcon icon={faEdit} className={styles.iconsm} />
+              </p>
+              </div>
+          )}
 
-        <div className={styles.card}>
-          <FontAwesomeIcon icon={faEdit} className={styles.iconsm2}/>
-          <FontAwesomeIcon icon={faTrash} className={styles.iconsm}/>
-          <h3 className={styles.nameOf}>Name</h3>
-          <p className={styles.paragraph}>
-            <a href="#">URL</a><br/>
-            Username<br/>
-            Password<br/>
-          </p>
-        </div>
       </div>
     </main>
   )
