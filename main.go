@@ -19,8 +19,8 @@ func main() {
     }))
 
 	router.GET("/password-cards", api.AllCards)
+	router.GET("/password-cards/:id", api.GetCard)
 	router.POST("/password-cards", api.NewCard)
-
 	router.PUT("/password-cards/:id", api.EditCard)
 	router.DELETE("/password-cards/:id", api.DeleteCard)
 

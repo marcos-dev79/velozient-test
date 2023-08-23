@@ -4,6 +4,7 @@ import (
 	"velozient/models"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"time"
 )
 
 type Cards []models.Card
@@ -17,13 +18,14 @@ func AllCards(c *gin.Context) {
 
 func NewCard(c *gin.Context) {
 	var card models.Card
+	now := time.Now()
 
 	if err := c.BindJSON(&card); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	card.ID = len(cards) + 1
+	card.ID = now.UnixMilli() // I would use a UUID here, but this is just for testing
 
 	cards = append(cards, card)
 
@@ -48,7 +50,7 @@ func EditCard(c *gin.Context) {
 	}
 
 	for i := range cards {
-		if cards[i].ID == id {
+		if cards[i].ID == int64(id) {
 			cards[i] = card
 		}
 	}
@@ -67,16 +69,9 @@ func DeleteCard(c *gin.Context) {
 		return
 	}
 
-	var card models.Card
-
-	if err := c.BindJSON(&card); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-
 	var newCards Cards
 	for i := range cards {
-		if cards[i].ID != id {
+		if cards[i].ID != int64(id) {
 			newCards = append(newCards, cards[i])
 		}
 	}
@@ -84,6 +79,27 @@ func DeleteCard(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": "Card Deleted OK",
-		"cards": cards,
+		"data": cards,
+	})
+}
+
+func GetCard(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	var card models.Card
+	for i := range cards {
+		if cards[i].ID == int64(id) {
+			card = cards[i]
+		}
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Here is your card",
+		"data": card,
 	})
 }

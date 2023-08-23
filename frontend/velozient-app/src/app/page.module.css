@@ -73,3 +73,8 @@
 .mgleft {
   margin-left: 0.5rem;
 }
+
+.pointer {
+  cursor: pointer;
+  color: rgb(44, 93, 255);
+}
